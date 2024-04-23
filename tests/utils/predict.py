@@ -1,5 +1,6 @@
 import random
 
+
 def create_random_data_to_predict():
     input_data = {
         "sample_code_number": random.randrange(63375, 13454352),
