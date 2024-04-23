@@ -15,13 +15,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Execute checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Google Auth
         id: auth
-        uses: 'google-github-actions/auth@v0'
+        uses: google-github-actions/auth@v2
         with:
-          token_format: access_token
           credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
 
