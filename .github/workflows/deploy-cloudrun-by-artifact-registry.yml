@@ -23,21 +23,15 @@ jobs:
           project_id: ${{ secrets.PROJECT_ID }}
 
       # gcloud configure docker
-      - name: Configure Docker
-        run: gcloud auth configure-docker --quiet
+      - name: Configure Credentials
+        run: |
+          gcloud config set project ${{ secrets.PROJECT_ID }}
+          gcloud auth activate-service-account  --key-file ${{ secrets.GCP_CREDENTIALS }}
 
       # Build Docker image
       - name: Build Docker image
-        run: docker image build -t demo -f Dockerfile .
-
-      # Tag Docker image with GCR URI
-      - name: Tag Docker image
-        run: docker image tag demo gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.SERVICE }}
-
-      # Push Docker image to Container Registry
-      - name: Push Docker image
-        run: docker push "gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.SERVICE }}"
+        run: gcloud builds submit --tag $IMAGE_NAME
 
       # Deploy Docker image to Cloud Run
       - name: Deploy Docker image to Cloud Run
-        run: gcloud run deploy ${{ secrets.SERVICE }} --image gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.SERVICE }} --region us-central1 --memory 128Mi --min-instances 0 --max-instances 1 --platform managed --port 80 --allow-unauthenticated
+        run: gcloud run deploy ${{ secrets.SERVICE }} --image $IMAGE_NAME --region us-central1 --memory 128Mi --min-instances 0 --max-instances 1 --platform managed --port 80 --allow-unauthenticated
