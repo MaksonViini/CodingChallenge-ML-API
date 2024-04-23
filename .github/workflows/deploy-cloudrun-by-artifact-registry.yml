@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: prd
     env:
-      IMAGE_NAME: gcr.io/demo/my-service:latest
+      IMAGE_NAME: gcr.io/${{ secrets.PROJECT_ID }}/my-service:latest
     steps:
       # Git checkout
       - name: Checkout
@@ -41,4 +41,4 @@ jobs:
 
       # Deploy Docker image to Cloud Run
       - name: Deploy Docker image to Cloud Run
-        run: gcloud run deploy api-to-predict-app --image="$IMAGE_NAME" --region="us-central1"  --allow-unauthenticated
+        run: gcloud run deploy my-service --image="$IMAGE_NAME" --region="us-central1" --memory 528Mi --min-instances 0 --max-instances 1 --allow-unauthenticated
