@@ -41,4 +41,4 @@ jobs:
 
       # Deploy Docker image to Cloud Run
       - name: Deploy Docker image to Cloud Run
-        run: gcloud run deploy api-service --image="$IMAGE_NAME:latest" --region="us-central1" --memory 528Mi --min-instances 0 --max-instances 1 --allow-unauthenticated
+        run: gcloud run deploy api-to-predict-app --image="gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.SERVICE }}:latest" --region="us-central1" --memory 528Mi --min-instances 0 --max-instances 1 --allow-unauthenticated
