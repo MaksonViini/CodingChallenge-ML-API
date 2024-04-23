@@ -35,13 +35,11 @@ USER root
 
 WORKDIR /$PYSETUP_PATH
 
-RUN pip install --upgrade pip 
-
-# \
-#     && apk --no-cache add lapack libstdc++     \
-#     && apk --no-cache add --virtual .builddeps g++ gcc gfortran musl-dev lapack-dev  \    
-#     && pip install scikit-learn \
-#     && apk del .builddeps     && rm -rf /root/.cache
+RUN pip install --upgrade pip \
+    && apk --no-cache add lapack libstdc++     \
+    && apk --no-cache add --virtual .builddeps g++ gcc gfortran musl-dev lapack-dev  \    
+    && pip install scikit-learn \
+    && apk del .builddeps     && rm -rf /root/.cache
 
 COPY --from=requirements-stage /tmp/requirements.txt /$PYSETUP_PATH/requirements.txt
 
