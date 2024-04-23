@@ -22,11 +22,18 @@ jobs:
           service_account_key: ${{ secrets.GCP_CREDENTIALS }}
           project_id: ${{ secrets.PROJECT_ID }}
 
-      # gcloud configure docker
+      # Auth to GCP
+      - name: Google Auth
+        id: auth
+        uses: google-github-actions/auth@v2
+        with:
+          token_format: access_token
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
+
+      # gcloud configure
       - name: Configure Credentials
         run: |
           gcloud config set project ${{ secrets.PROJECT_ID }}
-          gcloud auth activate-service-account  --key-file ${{ secrets.GCP_CREDENTIALS }}
 
       # Build Docker image
       - name: Build Docker image
