@@ -37,6 +37,7 @@ This command starts the Docker container in detached mode, mapping port 8080 on 
 
 After running the Docker container, you can access the local API endpoints as follows:
 
+- Production Endpoint: [https://my-service-j3236os52a-uc.a.run.app/](https://my-service-j3236os52a-uc.a.run.app/)  
 - Prediction Endpoint: [http://localhost:8080/api/v1/predict](http://localhost:8080/api/v1/predict) 
 - or [http://127.0.0.1:8080/api/v1/predict](http://127.0.0.1:8080/api/v1/predict)
 
