@@ -10,8 +10,10 @@ base_url = "http://127.0.0.1:8000"
 
 data = create_random_data_to_predict()
 
+print(data)
+
 @pytest.mark.asyncio
-async def test_root():
+async def test_predict():
 
     async with AsyncClient(app=app, base_url=base_url) as client:
         response = await client.post(
