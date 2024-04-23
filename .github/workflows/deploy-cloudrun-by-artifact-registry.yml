@@ -27,7 +27,7 @@ jobs:
         SERVICE_NAME: ${{ env.SERVICE }}
         REGION: ${{ env.REGION }}
       run: |
-        gcloud auth configure-docker $REGION-docker.pkg.dev
-        docker build -t $REGION-docker.pkg.dev/$GOOGLE_PROJECT/demo/$SERVICE_NAME:latest .
-        docker push $REGION-docker.pkg.dev/$GOOGLE_PROJECT/demo/$SERVICE_NAME:latest
-        gcloud run deploy api-to-predict-app --image gcr.io/$PROJECT_ID/api-to-predict-app --region $REGION --allow-unauthenticated
+        gcloud auth configure-docker us-west1-docker.pkg.dev
+        docker build -t us-west1-docker.pkg.dev/$GOOGLE_PROJECT/demo/$SERVICE_NAME:latest .
+        docker push us-west1-docker.pkg.dev/$GOOGLE_PROJECT/demo/$SERVICE_NAME:latest
+        gcloud run deploy api-to-predict-app --image gcr.io/$PROJECT_ID/api-to-predict-app --region us-west1 --allow-unauthenticated
