@@ -26,7 +26,7 @@ Multistage builds offer the advantage of reducing the image size by discarding u
 Once the image is built, run the Docker container using the following command:
 
 ```bash
-docker container run -dit -p 8080:80 IMAGE_NAME:version
+docker container run -dit -p 8080:8080 IMAGE_NAME:version
 ```
 
 This command starts the Docker container in detached mode, mapping port 8080 on the host to port 80 on the container.
