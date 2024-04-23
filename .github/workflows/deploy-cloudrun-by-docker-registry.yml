@@ -40,9 +40,12 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/api-to-predict-app:latest
 
       - name: Deploy to Cloud Run
-        id: deploy
         uses: google-github-actions/deploy-cloudrun@v2
         with:
-          image: ${{ secrets.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/api-to-predict-app/api-to-predict-app:${{ github.sha }}
-      - name: 'Use output'
-        run: 'curl "${{ steps.deploy.outputs.url }}"'
+          image: ${{ env.REGION }}-docker.pkg.dev/${{ secrets.PROJECT_ID }}/${{ env.REPOSITORY }}/${{ env.SERVICE }}:${{ github.sha }}
+
+      - name: Fetch deployed URL
+        run: |
+          deployed_url="${{ steps.deploy.outputs.url }}"
+          echo "Deployed URL: $deployed_url"
+          curl "$deployed_url"
