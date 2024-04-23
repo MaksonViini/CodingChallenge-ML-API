@@ -36,7 +36,7 @@ jobs:
 
       # Push Docker image to Container Registry
       - name: Push Docker image
-        run: docker push gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.SERVICE }}
+        run: gcloud builds submit --tag gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.SERVICE }}
 
       # Deploy Docker image to Cloud Run
       - name: Deploy Docker image to Cloud Run
