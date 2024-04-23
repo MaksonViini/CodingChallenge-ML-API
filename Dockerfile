@@ -12,7 +12,7 @@ ENV PYTHONUNBUFFERED=1 \
     POETRY_HOME="/opt/poetry" \
     POETRY_VIRTUALENVS_IN_PROJECT=true \
     POETRY_NO_INTERACTION=1 \
-    PYSETUP_PATH="/code" \
+    PYSETUP_PATH="code" \
     VENV_PATH="/$PYSETUP_PATH/.venv"
 
 USER root
@@ -50,6 +50,6 @@ RUN pip install --no-cache-dir --upgrade -r /$PYSETUP_PATH/requirements.txt
 
 COPY ./src/app /$PYSETUP_PATH/app
 
-COPY .env /$PYSETUP_PATH/
+COPY .env /$PYSETUP_PATH
 
 CMD ["gunicorn", "app.main:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8080"]
