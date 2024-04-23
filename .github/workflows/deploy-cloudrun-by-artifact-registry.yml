@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: prd
     env:
-      IMAGE_NAME: gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.SERVICE }}:latest
+      IMAGE_NAME: gcr.io/${{ secrets.PROJECT_ID }}/${{ secrets.SERVICE }}
     steps:
       # Git checkout
       - name: Checkout
