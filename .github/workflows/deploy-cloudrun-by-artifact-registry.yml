@@ -1,33 +1,43 @@
-name: Deploy ML API 
-
+name: DEPLOY GCP
 
 on:
   push:
-    branches:
-    - master
+    branches: [master]
 
 jobs:
   deploy:
+    name: Deploy to Cloud Run
     runs-on: ubuntu-latest
+    environment: prd
+    env:
+      IMAGE_NAME: gcr.io/${{ secrets.PROJECT_ID }}/${{ env.SERVICE }}:latest
     steps:
+      # Git checkout
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: code checkout
-      uses: actions/checkout@v2
+      # Login to GCP
+      - uses: google-github-actions/setup-gcloud@v2
+        with:
+          service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+          project_id: ${{ secrets.PROJECT_ID }}
 
-    - name: install the gcloud cli
-      uses: google-github-actions/setup-gcloud@v2
-      with:
-        project_id: ${{ secrets.GOOGLE_PROJECT }}
-        service_account_key: ${{ secrets.GCP_CREDENTIALS }}
-        export_default_credentials: true
+      # gcloud configure docker
+      - name: Configure Docker
+        run: gcloud auth configure-docker --quiet
 
-    - name: build and push the docker image
-      env:
-        GOOGLE_PROJECT: ${{ secrets.PROJECT_ID }}
-        SERVICE_NAME: ${{ env.SERVICE }}
-        REGION: ${{ env.REGION }}
-      run: |
-        gcloud auth configure-docker us-west1-docker.pkg.dev
-        docker build -t us-west1-docker.pkg.dev/$GOOGLE_PROJECT/demo/$SERVICE_NAME:latest .
-        docker push us-west1-docker.pkg.dev/$GOOGLE_PROJECT/demo/$SERVICE_NAME:latest
-        gcloud run deploy api-to-predict-app --image gcr.io/$PROJECT_ID/api-to-predict-app --region us-west1 --allow-unauthenticated
+      # Build Docker image
+      - name: Build Docker image
+        run: docker build -t $IMAGE_NAME .
+
+      # Tag Docker image with GCR URI
+      - name: Tag Docker image
+        run: docker tag $IMAGE_NAME $IMAGE_NAME
+
+      # Push Docker image to Container Registry
+      - name: Push Docker image
+        run: docker push $IMAGE_NAME
+
+      # Deploy Docker image to Cloud Run
+      - name: Deploy Docker image to Cloud Run
+        run: gcloud run deploy site --image $IMAGE_NAME --region us-central1 --memory 128Mi --min-instances 0 --max-instances 1 --platform managed --port 80 --allow-unauthenticated
