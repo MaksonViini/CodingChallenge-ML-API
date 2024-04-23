@@ -50,6 +50,5 @@ RUN pip install --no-cache-dir --upgrade -r /$PYSETUP_PATH/requirements.txt
 
 COPY ./src/app /$PYSETUP_PATH/app
 
-# COPY ./src/.env /$PYSETUP_PATH
 
 CMD ["gunicorn", "app.main:app", "--workers", "4", "--worker-class", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8080"]
